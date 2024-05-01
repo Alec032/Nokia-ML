@@ -1,0 +1,30 @@
+    {
+      "problemReportId": "PR639592",
+      "faultAnalysisId": [
+        "FA723771"
+      ],
+      "attachedPRs": [],
+      "author": "Iacoban, Anatolie (Nokia - RO/Timisoara)",
+      "build": "SBTS22R2_ENB_0000_000995_000000",
+      "description": "*** DEFAULT TEMPLATE for 2G-3G-4G-5G-SRAN-FDD-TDD-DCM-Micro-Controller common template v1.4.0 (02.07.2021) – PLEASE FILL IT IN BEFORE CREATING A PR AND DO NOT CHANGE / REMOVE ANY SECTION OF THIS TEMPLATE ***\r\n\r\n[1. Detail Test Steps:]\r\nBoth LTE and 5G BTS are onAIR;\r\nPerform LTE site reset from WebEM;\r\n[2. Expected Result:]\r\n5G and LTE is on AIr;\r\nAll radio are on Air and call is possible;\r\nAlarm No X2 link available for a specific LTEENB should be reported on 5G side and no other suspicious alarms .\r\n[3. Actual Result:]\r\nAlarm Fid 10 no connection to unit reported on all radio modules from 5G site\r\n[4. Tester analysis:]\r\nSW 5G : SBTS21B_ENB_0000_002175_000000;\r\nSW LTE: SBTS22R2_ENB_0000_000995_000000;\r\nLTE BTS is Sync Hub Master and System Radio Master.\r\nAlarm FID 10 is reported on all radio modules from 5G site when LTE site reset is performed.\r\nThe issue occurs when NR is PL or LTE is PL.\r\nRadio Link failure occured :\r\n[SET15 ] f2 ASP-2734-2-syslog- 2022-03-17T09:09:21.937106Z 6D-syslog-proxy WRN/[cp_ue][108][108] SgnbModificationRequestService.cpp:246 [ueIdCu:0, gnbDuUeF1APId:1, menbUeX2APId:19, gnbDuId:0] Start UE initiated RadioLinkFailure handling with failureType t310Expiry, isIntraDu false\r\n[SET15 ] fb ASP-2734-2-syslog- 2022-03-17T09:09:22.437277Z 6D-syslog-proxy WRN/[cp_ue][108][108] NsaRadioLinkFailureService.cpp:40 tWaitingRlRecover timeout: [ueIdCu:0, gnbDuUeF1APId:1, menbUeX2APId:19, gnbDuId:0]\r\n\r\nThe radios become onAIR  from 5G side when LTE is up.\r\n\r\n[5. Pronto Creator Interface (PCI) information:]\r\n\r\nPCI executed for Problem Report (17.03.2022, 11:44:51 UTC):\r\nPCI ID: PCI_20220317_124429_000\r\nMLoGIC model version: 1.0.0-alpha\r\nAccess PCI to check saved results: https://rep-portal.wroclaw.nsn-rdnet.net/pci/?pci_id=PCI_20220317_124429_000\r\n\r\n[6. Log(s) file name containing a fault: (clear indication (exact file name) and timestamp where fault can be found in attached logs):]\r\n\\\\eseefsn50.emea.nsn-net.net\\rotta4internal\\LTE_2\\anatolie_i\\fid10_PR\r\n[7. Test-Line Reference/used HW/configuration/tools/SW version:]\r\nNR: Airscale (ASIL+ABIO)\r\nLTE: Airscale (ASIB+2xABIO)\r\nNR: 60Mhz:60MHz:60MHz\r\nLTE: 20MHz+15MHz+10MHz/sector\r\n3xAEHC shared \r\n1xAHFIB dedicated LTE FDD\r\n5G NSA B66(AHFIB)+N41(AEHC)\r\n[8. Used Flags: (list here used R&D flags):]\r\n0x1003F=1 #Prints stored to RAM(pm)\r\n0x10040=1 #Prints forwarded to output devices\r\n0x10041=5 #ERadCcs_AaSysLogInputLevel - Severity changed from DEBUG to INF\r\n0x10042 = 0xC0A8ff7E  #for VMs with debug interface 192.168.255.130; IP ending in .126 we have 7E in Hex\r\n0x10043 = 0xc738\r\n\r\n#ETH Security disabled\r\n0x1A0020=1\r\n\r\n#Enabling ADMIN developer account:\r\n0x45005A = 1\r\n0x480008 = 1\r\n\r\n\r\n\r\n#Maximum number of resets allowed within one hour\r\n0x310001 = 300\r\n\r\n#FSP recovery resets allowed within one hour\r\n0x500002 = 30\r\n#LTE recovery resets allowed within one hour\r\n0x500001 = 30\r\n\r\n#RPMAG prints\r\n245=2\r\n#SOAP Trace\r\n250=6000000\r\n#apw prints\r\n252=2\r\n[9. Test Scenario History of Execution: (what was changed since it was tested successfully for the last time):]\r\n\r\nWas Test Scenario passing before? ( YES | NO | New scenario )\r\nNew scenario\r\nWhat was the last SW version Test Scenario was passing? ( SW load | New scenario )\r\nNew scenario \r\nWere there any differences between test-lines since last time Test Scenario was passing?  ( YES, explanation | NO | New test-line )\r\nNo\r\nWere there any changes in Test Scenario since last run it passed? ( YES, explanation | NO | New scenario )\r\nNew scenario\r\n[10. Test Case Reference: (QC, RP or UTE link):]\r\ntds://ran_st.mn_ran.qc-prod.ext.net.nokia.com/qcbin/TestLabModule-000000003649890581?EntityType=ITestInstance&EntityID=254068\r\n*** END OF DEFAULT TEMPLATE ***",
+      "feature": "CNI-81576\n5GC001524",
+      "groupInCharge": "BOAM_FH_DCMM",
+      "state": "Investigating",
+      "title": "[ST][TDD][CNI-81576][AIRSCALE+AIRSCALE][SBTS22R2][RFSharing][AEHC][eCPRI][ASIL+ABIO][ASIB+2xABIO]: Alarm Fid:10  No connection to unit reported on shared radio modules from 5G side during LTE site reset",
+      "authorGroup": "NITSIVBTS5",
+      "informationrequestID": [],
+      "statusLog": "APAC_FMM:18-3: New inflow to OAM_FH\r\n 22R2_FCB_reason:17-3: 5G RU lost during LTE reset, autonomous recovery after LTE is up",
+      "release": [
+        "SBTS22R2"
+      ],
+      "explanationforCorrectionNotNeeded": [],
+      "reasonWhyCorrectionisNotNeeded": [],
+      "faultAnalysisFeature": [],
+      "faultAnalysisGroupInCharge": [
+        "BOAM_FH_DCMM"
+      ],
+      "stateChangedtoClosed": null,
+      "faultAnalysisTitle": [
+        "[ST][TDD][5GC001524][AIRSCALE+AIRSCALE][SBTS22R2][RFSharing][AEHC][eCPRI][ASIL+ABIO][ASIB+2xABIO]: Alarm Fid:10  No connection to unit reported on shared radio modules from 5G side during LTE site reset"
+      ]
+    }

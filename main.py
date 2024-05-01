@@ -4,10 +4,12 @@ from feature_extraction import extract_features, extract_other
 from tfidf_operations import prepare
 from scipy.sparse import load_npz
 from model_load import load_model
+import numpy as np
+import os
 
 client = 'mongodb://localhost:27017/'
 db_name = 'model_db'
-collection_name = 'MultinomialNB_model'
+collection_name = 'MultinomialNB_model_final'
 model_name = 'MultinomialNB'
 
 def main():
@@ -34,10 +36,23 @@ def main():
     
     model = load_model(client, db_name, collection_name, model_name)
     if model:
-        print("Model loaded successfully.")
         data = load_npz("output.npz")
-        predictions = model.predict(data)
-        print("Predictions:", predictions)
+        predictions = model.predict_proba(data)
+                
+        for prediction in predictions:
+            max_index = np.argmax(prediction)
+            if max_index == 0:
+                print("NOT_BOAM:", "{:.2f}%".format(prediction[max_index] * 100))
+            elif max_index == 1:
+                print("BOAM:", "{:.2f}%".format(prediction[max_index] * 100))
+            else:
+                print("Invalid prediction value.")
+    else:
+        print("Failed to load model.")
+        
+    os.remove("features.txt")
+    os.remove("other_features.txt")
+    os.remove("output.npz")
 
 if __name__ == "__main__":
     main()
