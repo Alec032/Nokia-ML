@@ -7,15 +7,20 @@ from model_load import load_model
 from flask_cors import CORS
 import numpy as np
 from flask import Flask, jsonify, request
+from load_encoder import load_encoder
 import os
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+db_name2 = 'encoder_db'
+collection_name2 = 'label_encoders'
+encoder_name = 'group_in_charge_encoder'
+
 client = 'mongodb://localhost:27017/'
 db_name = 'model_db'
-collection_name = 'MultinomialNB_model_final'
+collection_name = 'MultinomialNB_model_final2'
 model_name = 'MultinomialNB'
 
 @app.route('/api/predict', methods=['POST'])
@@ -57,26 +62,22 @@ def predict():
     data = load_npz(output_file)
 
     model = load_model(client, db_name, collection_name, model_name)
+    label_encoder = load_encoder(client, db_name2, collection_name2, encoder_name)
     if model:
         predictions = model.predict_proba(data)
-                
+
         result = []
         for prediction in predictions:
             max_index = np.argmax(prediction)
-            if max_index == 0:
-                label = "NOT_BOAM"
-            elif max_index == 1:
-                label = "BOAM"
-            else:
-                label = "Invalid prediction"
+            original_label = label_encoder.inverse_transform([max_index])[0]
             probability = round(prediction[max_index] * 100, 2)
-            result.append({"label": label, "probability": probability})
-        
+            result.append({"label": original_label, "probability": probability})
+
         result.sort(key=lambda x: x['probability'], reverse=True)
-        
+
         return jsonify(result[0])
     else:
-        return jsonify({'error': 'Failed to load model'}), 500
+        return jsonify({'error': 'Failed to load model'})
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1')

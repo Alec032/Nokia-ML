@@ -37,10 +37,10 @@ export default function App() {
       });
       const data = await response.json();
       if (response.ok) {
-        setPredictionResult(data); // Update with data directly, not data[0]
+        setPredictionResult(data); 
         setError(null);
       } else {
-        setError(data.error || 'Prediction failed'); // Assuming the error message is in the 'error' field
+        setError(data.error || 'Prediction failed'); 
       }
     } catch (error) {
       console.error('Error:', error);

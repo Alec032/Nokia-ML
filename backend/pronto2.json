@@ -1,0 +1,30 @@
+    {
+      "problemReportId": "PR639788",
+      "faultAnalysisId": [
+        "FA723987"
+      ],
+      "attachedPRs": [],
+      "author": "Popescu, Nicoleta (Nokia - RO/Timisoara)",
+      "build": "SBTS00_ENB_9999_220317_000015",
+      "description": "[1. Detail Test Steps:]\r\n\r\nSBTS is configured with 2G-3G-4G technologies as in the CB007537 E1-2 configuration.\r\nSBTS22R3_ENB_9999_220317_000015 is installed.\r\n\r\n[2. Expected Result:]\r\nAll 14 LTE cells to be onAir. No unexpected alarms to be present. \r\n\r\n[3. Actual Result:]\r\nOnly 13 LTE cells are enabled, the 14th LTE cell is disabled with 6253 Cell configuration data distribution failed.\r\n\r\n[4. Tester analysis:]\r\nAccording to the BTS42209_1011_runtime_BTSOAM_DBG_LTS.log:\r\n\r\n00 FCT-1011-3-LTS 2022-03-18T08:29:17.123454Z 3ED6-LTS DBG/LTS/LTS, [CorePoolDependencies] !warning! /MRBTS-1/RAT-1/MCTRL-1/BBTOP_M-1/SW_NODE_DEPLOYMENT-1/SW_NODE_SCHEMA-14 became offline, but won't cause core pool failure.\r\n00 FCT-1011-3-LTS 2022-03-18T08:29:30.009374Z 3ED6-LTS DBG/LTS/LTS, [CorePoolDependencies] !warning! /MRBTS-1/RAT-1/MCTRL-1/BBTOP_M-1/SW_NODE_DEPLOYMENT-1/SW_NODE_SCHEMA-14 became offline, but won't cause core pool failure.\r\n00 FCT-1011-3-LTS 2022-03-18T08:29:59.060757Z 3ED6-LTS DBG/LTS/LTS, [CellSetup] !error! Error status in CellSetupResp:SMessageResult(status = 1, cause = 0, specificCause = 0)\r\n00 FCT-1011-3-LTS 2022-03-18T08:29:59.061426Z 3ED6-LTS DBG/LTS/LTS, [CorePoolLManager] !warning! CorePoolLObserver creation failed for LNCEL_L : /MRBTS-1/RAT-1/LTS-1/LNBTS_L-1/LNCEL_L-41114\r\n\r\n[5. Pronto Creator Interface (PCI) information:]\r\n\r\nPCI executed for Problem Report (18.03.2022, 12:52:56 UTC):\r\nPCI ID: PCI_20220318_135204_000\r\nMLoGIC model version: 1.0.0-alpha\r\nAccess PCI to check saved results: https://rep-portal.wroclaw.nsn-rdnet.net/pci/?pci_id=PCI_20220318_135204_000\r\n\r\n\r\n[6. Log(s) file name containing a fault: (clear indication (exact file name) and timestamp where fault can be found in attached logs):]\r\n\r\n\\\\eseefsn50.emea.nsn-net.net\\rotta4internal\\LTE_2\\nmargari\\CB7535\\CellConfigDataDistributionFailed\\18.03.2022_without_flag\r\n\r\n\r\n[7. Test-Line Reference/used HW/configuration/tools/SW version:]\r\nTest-Line Reference:\r\nConfiguration E1-2 from CB007537 feature\r\nHW used: ASIB+ABIA(2G/3G)+ABIN(4G)+2xFXDD+4xFHFB\r\nFXDD: 6 LTE cells, 10Mhz, 4T4R, b8 + 3 WCDMA cells, 1T2R, b8 +3 GSM cells, 1T2R, b8\r\nFHFB: 8 LTE cells, 10Mhz, 4T4R, b2 +3 WCDMA cells, 1T2R, b2 +5 GSM cells, 1T2R, b2\r\n\r\nBTS SW version:\r\nSBTS22R3_ENB_9999_220317_000015 \r\n\r\n[8. Used Flags: (list here used R&D flags):]\r\n#Log enabling related\r\n0x1003f=1 #ERadCcs_AaSysLogInputLevel - Severity changed from DEBUG to INF\r\n0x10040=1 #ERadCcs_AaSysLogOutputLevel - Severity changed from DEBUG to INFO\r\n0x10041=5 #ERadCcs_AaSysLogInputLevel - Severity changed from DEBUG to INF\r\n0x10042 = 0xC0A8ff82  #for VMs with debug interface 192.168.255.130; for IP ending in .126 we have 7E\r\n0x10043 = 0xc738\r\n\r\n#EnableNewCellSlotConsumption_CB008415_SR_A_B1\r\n#0x42002A = 1\r\n\r\n#PR_RFM_Block_Reset_WebEM\r\n0x1003F = 1 \r\n0x10040 = 1\r\n245=2  # FEAT_DBG_Rpmag\r\n250=6000000  #FEAT_DBG_BTSOM_Enable_SoapTrace\r\n252=2  #FEAT_DBG_BTSOM_APW\r\n\r\n#ETH Security disabled\r\n0x1A0020=1\r\n\r\n#IM Gateway needed for IM Commander, enables port 12345; can be removed for CommonTrunk and FL18SP releases\r\n0x3A0001 = 1\r\n\r\n#Enabling ADMIN developer account:\r\n0x45005A = 1\r\n#PR463594 flags\r\n0x1007C = 1 #Linux log\r\n0x210017 = 1 #disable SW version check\r\n#BBC debug\r\n275=1\r\n0x42000f = 1 #DCS Timings Debug\r\n\r\n0x13001E = 1 #UEC TUecRadDebugLogEnabledCommon\r\n0x13001F = 1 #UEC TUecRadDebugLogEnabledCommonCodec\r\n0x130020 = 1 #UEC TUecRadDebugLogEnabledGlobal\r\n0x130021 = 1 #UEC TUecRadDebugLogEnabledUec\r\n\r\n#Maximum number of resets allowed within one hour\r\n0x310001 = 300\r\n\r\n#FSP recovery resets allowed within one hour\r\n0x500002 = 30\r\n#LTE recovery resets allowed within one hour\r\n0x500001 = 30\r\n\r\n#Fallback related flags, disables recovery in case of process crash \r\n245=2\r\n0x190030=0  #HW files\r\n#0x300020=30\r\n\r\n0x4F00D0=0\r\n\r\n#TCP DUMP:\r\n0x3700E2=1\r\n0x3700E3=15\r\n\r\n#rf syslog\r\n0x200A6 = 1\r\n\r\n#automation\r\n\r\n0x1A1300=0             # Disables Firewall feature 5GC000265 [ & 5GC000325, 5GC000268]\r\n0x1A0020=1             #ETH Security disabled\r\n\r\n0x480008=1             #disables the Ethernet Security in uncommissioned state(moreBTSlogs)\r\n\r\n[9. Test Scenario History of Execution: (what was changed since it was tested successfully for the last time):]\r\n\r\nWas Test Scenario passing before?  [ YES | NO | New scenario ]\r\nNew scenario\r\nWhat was the last SW version Test Scenario was passing? [ SW load | New scenario ]\r\nNew scenario\r\nWere there any differences between test-lines since last time Test Scenario was passing?  [ YES, explanation | NO | New test-line ]\r\nNew test-line\r\nWere there any changes in Test Scenario since last run it passed? [ YES, explanation | NO | New scenario ]\r\nNew scenario\r\n\r\n[10. Test Case Reference: (QC, RP or UTE link):]\r\ntds://ran_st.mn_ran.qc-prod.ext.net.nokia.com/qcbin/TestLabModule-000000003649890581?EntityType=ITestSet&EntityID=29538",
+      "feature": "CB007537-5G-E\n22R3_LWG_CB007537_E1-2",
+      "groupInCharge": "BOAM_CA_BTS_SPF_LO",
+      "state": "New",
+      "title": "[FDD][SBTS22R3][ABIN][2G-3G-4G][CB007537][FID 6253] Cell configuration data distribution failed on the 14th LTE cell",
+      "authorGroup": "NITSIVBTS5",
+      "informationrequestID": [],
+      "statusLog": null,
+      "release": [
+        "SBTS00"
+      ],
+      "explanationforCorrectionNotNeeded": [],
+      "reasonWhyCorrectionisNotNeeded": [],
+      "faultAnalysisFeature": [],
+      "faultAnalysisGroupInCharge": [
+        "BOAM_CA_BTS_SPF_LO"
+      ],
+      "stateChangedtoClosed": null,
+      "faultAnalysisTitle": [
+        "[FDD][SBTS22R3][ABIN][2G-3G-4G][CB007537][FID 6253] Cell configuration data distribution failed on the 14th LTE cell"
+      ]
+    }
